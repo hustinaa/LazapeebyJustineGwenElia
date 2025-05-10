@@ -1,0 +1,157 @@
+{% extends 'payroll_app/base.html' %}
+
+{% block content %}
+<style>
+.page-margin {
+  margin: 25px;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  margin-bottom: 30px;
+}
+
+.inside{
+  background-color: #f0f0f0; /* Set the background color */
+  padding: 10px; /* Add padding for better spacing */
+}
+
+.inside2{
+  margin: auto;
+}
+
+.container2 {
+  width: 80%;
+  margin: auto;
+  margin-bottom: 50px;
+}
+
+.field-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.field-container label {
+  margin-right: 10px; /* space between label and input/select*/
+}
+
+</style>
+{% if error_message %}
+  <div class="alert alert-danger mt-3" role="alert">
+    {{ error_message }}
+  </div>
+{% endif %}
+
+{% if messages %}
+  <div class="alert alert-danger">
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="container page-margin">
+  <br>
+  <h1>Payroll Creation</h1>
+  <div class="inside">
+    <form method="post">
+      {% csrf_token %}
+      <div class="field-container">
+        <label for="payroll_for">Payroll for</label>
+        <div class="col-4">
+          <select name="id_number" class="form-select" id="payroll_for" required>
+            <option value="All Employees">All Employees</option>
+            {% for employee in employees %}
+                <option value="{{ employee.id_number }}">{{ employee.id_number }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <hr>
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <div class="field-container">
+              <label for="month">Month</label>
+              <select name="month" class="form-select" id="month">
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class="field-container">
+              <label for="year">Year</label>
+              <input type="text" name="year" class="form-control" id="year">
+            </div>
+          </div>
+          <div class="col">
+            <div class="field-container">
+              <label for="cycle">Cycle</label>
+              <select name="cycle" class="form-select" id="cycle">
+                <option value="1">Cycle 1</option>
+                <option value="2">Cycle 2</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+  <hr>
+</div>
+
+<div class="container2 page-margin">
+  <h1>Payslips Summary</h1>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th class="table-dark text-center" scope="col">ID Number</th>
+        <th class="table-dark text-center" scope="col">Date</th>
+        <th class="table-dark text-center" scope="col">Cycle</th>
+        <th class="table-dark text-center" scope="col">Total Pay</th>
+        <th class="table-dark text-center" scope="col">Options</th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      {% for payslip in payslips_summary %}
+        <tr>
+          <td class="align-middle">{{ payslip.id_number }}</td>
+          <td class="align-middle">{{ payslip.month }} {{ payslip.date }}, {{ payslip.year }}</td>
+          <td class="align-middle">{{ payslip.cycle }}</td>
+          <td class="align-middle">{{ payslip.total_pay }}</td>
+          <td>
+              <div class="mb-2 mt-2 text-center"> 
+                <form method="get" action="{% url 'payroll_app:view_payslips' id_number=payslip.id_number year=payslip.year month=payslip.month cycle=payslip.cycle %}">
+                  <button type="view" class="btn btn-info">View</button>
+                </form>
+              </div>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <hr>
+</div>
+
+
+{% endblock %}

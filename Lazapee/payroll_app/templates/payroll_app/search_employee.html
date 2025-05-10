@@ -1,0 +1,124 @@
+{% extends 'payroll_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+.field-container {
+  display: flex;
+  justify-content: center;
+}
+
+.field-container button {
+  margin-left: 3px; /* space between input and button/select */
+}
+
+.field-container2 {
+  margin-left: -3px; /* reduce space between input and button/select */
+}
+
+.field-container2 input {
+  margin-left: 3px; /* space between input and button/select */
+}
+
+.field-container2 button {
+  margin-right: 40px; /* space between input and button/select */
+}
+
+.option-container {
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.gitna {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust this value as needed */
+}
+
+
+</style>
+
+{% if messages %}
+<div class="alert alert-primary">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="container" style="margin-bottom: 80px; margin-top: 80px; width: 1100;">
+    <div class="row justify-content-between">
+        <div class="col-auto">
+            <h1 class="mb-0">Employees</h1>
+        </div>
+        <div class="col-auto">
+            <form method="GET" action="{% url 'payroll_app:search_employee' %}">
+                <div class="field-container">
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="search_query" placeholder="Search for Employee">
+                    </div>
+                    <button type="submit" class="btn btn-dark">Search</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-auto">
+            <a href="{% url 'payroll_app:create_employee' %}" class="btn btn-dark">+New Employee</a>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="table-dark text-center" scope="col">Name</th>
+                            <th class="table-dark text-center" scope="col">ID Number</th>
+                            <th class="table-dark text-center" scope="col">Rate</th>
+                            <th class="table-dark text-center" scope="col">Allowance</th>
+                            <th class="table-dark text-center" scope="col">Overtime</th>
+                            <th class="table-dark text-center" scope="col">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                    {% if employee_objects %}
+                        {% for employee_record in employee_objects %}
+                            <tr>
+                                <td class="align-middle">{{ employee_record.name }} </td>
+                                <td class="align-middle">{{ employee_record.id_number }} </td>
+                                <td class="align-middle">{{ employee_record.rate }} </td>
+                                <td class="align-middle">{{ employee_record.allowance }}</td>
+                                <td class="align-middle">{{ employee_record.overtime_pay }} </td>
+                                <td>
+                                    <div class="option-container d-flex align-items-end">
+                                        <form style="margin-bottom: 5px; margin-top: 10px;" method="post" action="{% url 'payroll_app:update_employee' employee_record.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary me-1 meaning" name="button" value="Update">Update</button>
+                                        </form>
+                                        <form style="margin-bottom: 5px; margin-top: 10px;" method="post" action="{% url 'payroll_app:delete_employee' employee_record.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger" name="button" value="Delete">Delete</button>
+                                        </form>
+                                    </div>
+                                    <div class="option-container d-flex">
+                                        <form method="post" action="{% url 'payroll_app:add_overtime' employee_record.id %}">
+                                            {% csrf_token %}
+                                            <div class="field-container2">
+                                                <input type="number" style="height:35px; width:170px" name="overtime_hours" required placeholder=" Overtime Hours">
+                                                <button type="submit" class="btn btn-success" name="button" value="Confirm">Add Overtime</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+                <div class="gitna">
+                    <a href="{% url 'payroll_app:employee_page' %}" class="btn btn-dark">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

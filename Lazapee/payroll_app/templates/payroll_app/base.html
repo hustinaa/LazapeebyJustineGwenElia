@@ -1,0 +1,44 @@
+{% load static %}
+
+<html>
+    <head>
+        <title>Lazapee</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+        <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static '/bootstrap/css/custom.css' %}">
+        <script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        
+    </head>
+    <body>
+        <nav class="navbar navbar-expand navbar-dark bg-dark mb-3 sticky-top">
+            <div class="container-fluid">
+                <a class="navbar-brand mb-0" href="{% url 'payroll_app:employee_page' %}">LAZAPEE Payroll</span> </a>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                      <a class="nav-link" href="/employee_page">Employees</a>
+                      <a class="nav-link" href="/payslips_page">Payslips</a>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+
+        
+        <div class="container ">
+            <div class="row">
+
+                {% block content %}
+                {% endblock %}
+
+            </div>
+        </div>  
+        
+
+   
+    </body>
+    <nav class="navbar bg-dark mt-5 fixed-bottom justify-content-center">
+        <div style="color: white;">&copy; 2024</div>
+   </nav>
+
+
+</html>

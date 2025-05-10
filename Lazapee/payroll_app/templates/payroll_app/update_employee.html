@@ -1,0 +1,69 @@
+{% extends 'payroll_app/base.html' %}
+{% load static %}
+
+{% block content %} 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Employee Record</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+    h5{
+        font-size: 30px;
+    }
+</style>
+</head>
+
+<body>
+    {% if error_message %}
+        <div class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title text-center">Update Employee Record</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'payroll_app:update_record' employee_id=employee.id %}" method="post"">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ employee.name }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="id_number">ID Number:</label>
+                                <input type="text" class="form-control" id="id_number" name="id_number" value="{{ employee.id_number }}" disabled>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rate">Rate:</label>
+                                <input type="text" class="form-control" id="rate" name="rate" value="{{ employee.rate }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="allowance">Allowance (Optional):</label>
+                                <input type="text" class="form-control" id="allowance" name="allowance" value="{{ employee.allowance }}">
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary" name="button" value="Update">Update</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends 'payroll_app/base.html' %}
+
+{% block content %}
+
+<style>
+  .container {
+    width: 80%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
+  h1 {
+      font-size: 18px;
+      text-align: left;
+  }
+
+  h2 {
+      font-size: 18px;
+      text-align: right;
+  }
+ 
+  h3 {
+      font-size: 18px;
+      text-align: center;
+  }
+
+  h4 {
+      font-size: 18px;
+      text-align: left;
+      margin-left: 20px;
+  }
+
+  h5 {
+      font-size: 25px;
+      text-align: left;
+  }
+
+  h6 {
+      font-size: 25px;
+      text-align: center;
+  }
+
+</style>
+  
+<div class="container">
+  <div class="row justify-content-between align-items-center">
+      <div class="col-auto">
+      <h1><strong>Name:</strong> {{ employee.getName }}</h1>
+        <h1><strong>ID Number:</strong> {{ employee.getID }}</h1>
+      </div>
+      <div class="col-auto">
+        <h2><strong>Date:</strong>
+          {% for payslip_date, payslip_month, payslip_year in payslip_dates %}
+            {{ payslip_month }} {{ payslip_date }}, {{ payslip_year }}
+          {% endfor %}
+        </h2>
+        <h2><strong>Payslip ID:</strong>
+          {% for payslip_id in payslip_ids %}
+            {{ payslip_id }}
+          {% endfor %}
+        </h2>
+      </div>
+    </div>
+  <div>
+  <br>
+
+  <!--from Amount-->
+  <!--First Row-->
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col">
+      <h3><strong>AMOUNT</strong></h3>
+    </div>
+  </div>
+  
+  <!--Second Row-->
+  <div class="row">
+    <div class="col">
+      <h1><strong>EARNINGS:</strong></h1>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+  
+  <!--Third Row-->
+  <div class="row">
+    <div class="col">
+      <h4>Base Pay</h4>
+      <h4>Allowances</h4>
+      <h4>Overtime</h4>
+      <hr>
+    </div>
+    <div class="col">
+      <h1>{{ employee.getRate|default:"0.0" }}</h1>
+      <h1>{{ employee.getAllowance|default:"0.0" }}</h1>
+      <h1>{{ employee.getOvertime|default:"0.0" }}</h1>
+      <hr>
+    </div>
+  </div>
+  
+  <!--Fourth Row-->
+  <div class="row">
+    <div class="col">
+      <h4><strong>GROSS PAY</strong></h4>
+    </div>
+    <div class="col">
+      <h3><strong>PHP {{ employee.getGross_pay|default:"0.0" }}</strong></h3>
+    </div>
+  </div>
+    
+    <hr>
+
+
+  <!--from DEDUCTIONS-->
+  <!--Second Row-->
+  <div class="row">
+    <div class="col">
+      <h1><strong>DEDUCTIONS:</strong></h1>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+  
+  <!--Third Row-->
+  <div class="row">
+    <div class="col">
+      <h4>W/HOLDING TAX</h4>
+      {% if cycle == 1 %}
+        <h4>PAG-IBIG</h4> <!-- Conditionally display PAG-IBIG for cycle 1 -->
+      {% endif %}
+      {% if cycle == 2 %}
+        <h4>PHILHEALTH</h4> <!-- Conditionally display PHILHEALTH for cycle 2 -->
+        <h4>SSS</h4> <!-- Conditionally display SSS for cycle 2 -->
+      {% endif %}
+      <hr>
+    </div>
+    <div class="col">
+      <h1>{{ deductions_tax|default:"0.0" }}</h1>
+      {% if cycle == 1 %}
+        <h1>{{ pag_ibig|default:"0.0" }}</h1> <!-- Conditionally display PAG-IBIG for cycle 1 -->
+      {% endif %}
+      {% if cycle == 2 %}
+        <h1>{{ deductions_health|default:"0.0" }}</h1> <!-- Conditionally display PHILHEALTH for cycle 2 -->
+        <h1>{{ sss|default:"0.0" }}</h1> <!-- Conditionally display SSS for cycle 2 -->
+      {% endif %}
+      <hr>
+    </div>
+  </div>
+  
+  <!--Fourth Row-->
+  <div class="row">
+    <div class="col">
+      <h4><strong>TOTAL DEDUCTIONS</strong></h4>
+    </div>
+    <div class="col">
+      <h3><strong>PHP {{ total_deductions }}</strong></h3>
+    </div>
+  </div>
+
+    <hr>
+    <div class="row">
+      <div class="col">
+        <h5><strong>NET PAY:</strong></h5>
+      </div>
+      <div class="col">
+        <h6><strong>PHP {{ net_pay }}</strong></h6>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

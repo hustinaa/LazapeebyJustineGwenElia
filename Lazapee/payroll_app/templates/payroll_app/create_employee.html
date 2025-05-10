@@ -1,0 +1,75 @@
+{% extends 'payroll_app/base.html' %}
+{% load static %}
+
+{% block content %} 
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .error-box {
+            border: 1px solid red;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: rgba(255, 0, 0, 0.1); /* Red with 10% opacity */
+        }
+
+        h5{
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+{% if error_message %}
+    <div class="error-box">{{ error_message }}</div>
+{% endif %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title text-center">Create Employee</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'payroll_app:create_employee' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="current_password">Name:</label>
+                                <input type="name" class="form-control" id="name" name="name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="new_password">ID Number:</label>
+                                <input type="id_number" class="form-control" id="id_number" name="id_number">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="new_password">Rate:</label>
+                                <input type="rate" class="form-control" id="rate" name="rate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="new_password">Allowance (Optional):</label>
+                                <input type="allowance" class="form-control" id="allowance" name="allowance">
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+{% endblock %}
